@@ -11,6 +11,9 @@ const api = {
     findProfile: (id) => electron.ipcRenderer.invoke('people:find-by-id', id),
     findAll: () => electron.ipcRenderer.invoke('people:get-all')
   },
+  peopleAttendance: {
+    
+  },
   ministry: {
     createDivisionProfile: (payload) => electron.ipcRenderer.invoke('division:create', payload),
     updateDivisionProfile: (payload) => electron.ipcRenderer.invoke('division:update', payload),

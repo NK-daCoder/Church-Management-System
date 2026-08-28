@@ -12,8 +12,12 @@ const PeopleContextProvider = ({ children }) => {
     setPeopleList(result)
   }
 
-  const createPerson = async (payload) => {
-    const result = await window.api.people.createProfile(payload)
+  const createPerson = async (payload, personType) => {
+    const personPayload = {
+      ...payload,
+      type: personType
+    }
+    const result = await window.api.people.createProfile(personPayload)
     await loadPeople()
     return result
   }

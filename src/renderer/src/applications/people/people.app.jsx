@@ -12,7 +12,7 @@ const managers = [
 const ITEMS_PER_PAGE = 5
 
 const PeopleApplication = () => {
-  const { peopleList } = usePeopleContext()
+  const { peopleList, findPersonProfileById, deletePeople} = usePeopleContext()
 
   const [toggleBtn, setToggleBtn] = React.useState('visitor')
   const [currentPage, setCurrentPage] = React.useState(1)
@@ -53,7 +53,10 @@ const PeopleApplication = () => {
    * category or search changes
    */
   React.useEffect(() => {
-    setCurrentPage(1)
+    const setCurrentPage = () => {
+      setCurrentPage(1)
+    }
+    setCurrentPage()
   }, [toggleBtn, searchQuery])
 
   const getInitials = (name) => {
@@ -419,6 +422,10 @@ const PeopleApplication = () => {
                               transition-colors
                               cursor-pointer
                             "
+                            onClick={async () => { 
+                              const result = await findPersonProfileById(person.id)
+                              console.log(result)
+                            }}
                           >
                             <Eye size={15} strokeWidth={1.8} />
                           </button>
@@ -455,6 +462,10 @@ const PeopleApplication = () => {
                               transition-colors
                               cursor-pointer
                             "
+                            onClick={async () => {
+                              const result = await deletePeople(person.id)
+                              console.log(result)
+                            }}
                           >
                             <Trash2 size={15} strokeWidth={1.8} />
                           </button>
