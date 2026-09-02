@@ -12,7 +12,10 @@ export const organizationalRolesResponsibility = {
   table: 'people_organizational_roles_responsibilities',
   schema: {
     id: { type: 'TEXT', notNull: true, primaryKey: true },
-    role_id: { type: 'TEXT', references: { table: 'people_organizational_roles', column: 'id', onDelete: 'CASCADE' } },
+    role_id: {
+      type: 'TEXT',
+      references: { table: 'people_organizational_roles', column: 'id', onDelete: 'CASCADE' }
+    },
     responsibilities: { type: 'TEXT' }
   }
 }

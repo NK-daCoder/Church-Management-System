@@ -8,7 +8,8 @@ import {
   peopleFamilySchema,
   peopleHobbySchema,
   peopleJobSchema,
-  peopleProfileSchema
+  peopleProfileSchema,
+  peopleSpiritualJourney
 } from '../schemas/people/profile.schema.js'
 import { DatabaseOrm } from './modules/orm/orm.js'
 import {
@@ -52,6 +53,7 @@ export class DatabaseInitialization {
       peopleStatusHistorySchema,
       peopleJobSchema,
       DivisionSchema,
+      peopleSpiritualJourney,
       ministryProfileSchema,
       ministryRoleGoalsSchema,
       ministryRoleQualification,

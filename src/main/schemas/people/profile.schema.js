@@ -117,3 +117,19 @@ export const peopleJobSchema = {
     emergency_no: { type: 'TEXT' }
   }
 }
+
+export const peopleSpiritualJourney = {
+  table: 'people_spiritual_journey',
+  schema: {
+    id: { type: 'TEXT', primaryKey: true, notNull: true },
+    people_id: {
+      type: 'TEXT',
+      references: { table: 'people', column: 'id', onDelete: 'CASCADE' }
+    },
+    prev_spiritual_status: { type: 'text' },
+    current_spiritual_status: { type: 'text', default: 'none' },
+    change_reason: { type: 'text' },
+    created_at: { type: 'text', default: 'current_timestamp' },
+    update_at: { type: 'text' }
+  }
+}

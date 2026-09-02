@@ -4,16 +4,16 @@ Build a modern **Church Management System (ChMS)** for managing church members, 
 
 The system should be designed as a **desktop-first, offline-capable application** using:
 
-* **Electron**
-* **React**
-* **JavaScript**
-* **Vite**
-* **Tailwind CSS**
-* **SQLite**
-* **better-sqlite3**
-* **Electron IPC**
-* **React Context for application state**
-* **Preact Signals where reactive state is beneficial**
+- **Electron**
+- **React**
+- **JavaScript**
+- **Vite**
+- **Tailwind CSS**
+- **SQLite**
+- **better-sqlite3**
+- **Electron IPC**
+- **React Context for application state**
+- **Preact Signals where reactive state is beneficial**
 
 The architecture must be modular and maintainable. Avoid putting database logic directly inside React components.
 
@@ -110,19 +110,19 @@ inactive
 
 The People module must support:
 
-* Create person
-* View person
-* Update person
-* Delete person
-* Search people
-* Filter people by status
-* Filter by gender
-* Filter by marital status
-* View profile
-* View status history
-* View attendance history
-* View contribution history
-* View ministry assignments
+- Create person
+- View person
+- Update person
+- Delete person
+- Search people
+- Filter people by status
+- Filter by gender
+- Filter by marital status
+- View profile
+- View status history
+- View attendance history
+- View contribution history
+- View ministry assignments
 
 The person profile should become the central location for information about that individual.
 
@@ -134,12 +134,12 @@ Visitors are people who have interacted with the church but have not necessarily
 
 Allow administrators to:
 
-* Register visitors.
-* Record first visit.
-* Record follow-up information.
-* Assign follow-up status.
-* Convert a visitor into a member.
-* View visitor history.
+- Register visitors.
+- Record first visit.
+- Record follow-up information.
+- Assign follow-up status.
+- Convert a visitor into a member.
+- View visitor history.
 
 Example visitor information:
 
@@ -174,13 +174,13 @@ baptism_date
 
 Allow administrators to:
 
-* View members.
-* Register membership.
-* Update membership information.
-* View membership history.
-* View ministry assignments.
-* View attendance.
-* View contributions.
+- View members.
+- Register membership.
+- Update membership information.
+- View membership history.
+- View ministry assignments.
+- View attendance.
+- View contributions.
 
 ---
 
@@ -242,14 +242,14 @@ Sound Engineer
 
 Support:
 
-* Create division
-* Create department
-* Create ministry/team
-* Create role
-* Assign person to ministry
-* Assign role to person
-* Remove assignment
-* View ministry members
+- Create division
+- Create department
+- Create ministry/team
+- Create role
+- Assign person to ministry
+- Assign role to person
+- Remove assignment
+- View ministry members
 
 A person should be able to belong to multiple ministries.
 
@@ -290,14 +290,14 @@ updated_at
 
 Support:
 
-* Create program
-* Edit program
-* Delete program
-* View upcoming programs
-* View previous programs
-* Search programs
-* Filter by type
-* View program details
+- Create program
+- Edit program
+- Delete program
+- View upcoming programs
+- View previous programs
+- Search programs
+- Filter by type
+- View program details
 
 ---
 
@@ -328,13 +328,13 @@ excused
 
 Support:
 
-* Mark attendance.
-* Search people.
-* Quickly check people in.
-* View attendance for an event.
-* View attendance history for a person.
-* Calculate attendance statistics.
-* See attendance trends.
+- Mark attendance.
+- Search people.
+- Quickly check people in.
+- View attendance for an event.
+- View attendance history for a person.
+- Calculate attendance statistics.
+- See attendance trends.
 
 Avoid storing attendance directly inside the person record.
 
@@ -378,15 +378,15 @@ other
 
 Support:
 
-* Record contribution.
-* Edit contribution.
-* Delete contribution.
-* View contribution history.
-* Filter by date.
-* Filter by contribution type.
-* View totals.
-* View monthly totals.
-* View individual contribution history.
+- Record contribution.
+- Edit contribution.
+- Delete contribution.
+- View contribution history.
+- Filter by date.
+- Filter by contribution type.
+- View totals.
+- View monthly totals.
+- View individual contribution history.
 
 Financial information should have appropriate access controls.
 
@@ -518,11 +518,11 @@ contributions
 
 Use:
 
-* Primary keys
-* Foreign keys
-* Unique constraints
-* Indexes
-* Appropriate timestamps
+- Primary keys
+- Foreign keys
+- Unique constraints
+- Indexes
+- Appropriate timestamps
 
 Avoid unnecessary duplication.
 
@@ -627,28 +627,28 @@ Use a clean, premium desktop interface inspired by modern macOS/business applica
 
 Design principles:
 
-* Clean typography
-* Generous spacing
-* Minimal visual noise
-* Consistent cards
-* Subtle borders
-* Clear hierarchy
-* Responsive tables
-* Good empty states
-* Loading states
-* Error states
-* Confirmation dialogs for destructive operations
+- Clean typography
+- Generous spacing
+- Minimal visual noise
+- Consistent cards
+- Subtle borders
+- Clear hierarchy
+- Responsive tables
+- Good empty states
+- Loading states
+- Error states
+- Confirmation dialogs for destructive operations
 
 The sidebar should provide navigation between modules.
 
 Tables should support:
 
-* Search
-* Filtering
-* Pagination
-* Row actions
-* Selection
-* Empty states
+- Search
+- Filtering
+- Pagination
+- Row actions
+- Selection
+- Empty states
 
 Forms should use reusable components.
 
@@ -702,12 +702,12 @@ Validate data before inserting it into SQLite.
 
 Examples:
 
-* Required name.
-* Valid email.
-* Valid dates.
-* Positive financial amounts.
-* Valid foreign keys.
-* Valid status values.
+- Required name.
+- Valid email.
+- Valid dates.
+- Positive financial amounts.
+- Valid foreign keys.
+- Valid status values.
 
 Database constraints should provide a second layer of protection.
 
@@ -782,20 +782,20 @@ directly to React.
 
 Do NOT implement these in the first version unless the architecture requires placeholders:
 
-* Payroll
-* Full accounting
-* Online payments
-* SMS gateway
-* Email marketing
-* Push notifications
-* Complex CRM automation
-* Asset management
-* Inventory management
-* Advanced accounting
-* Multi-church SaaS architecture
-* AI features
-* Mobile application
-* Public church website
+- Payroll
+- Full accounting
+- Online payments
+- SMS gateway
+- Email marketing
+- Push notifications
+- Complex CRM automation
+- Asset management
+- Inventory management
+- Advanced accounting
+- Multi-church SaaS architecture
+- AI features
+- Mobile application
+- Public church website
 
 These can become future modules.
 

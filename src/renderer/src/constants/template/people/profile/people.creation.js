@@ -44,6 +44,10 @@ export const peopleProfileTemplate = {
       schoolName: '',
       educationLevel: ''
     },
+    spiritualJourney: {
+      spiritualStatus: 'seeker',
+      reason: 'new comer'
+    },
     occupation: [
       {
         occupation: '',

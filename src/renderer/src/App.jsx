@@ -1,4 +1,4 @@
-import PeopleApplication from './applications/people/people.app'
+import PeopleMainApplication from './applications/people/people.app'
 import DateTimeWidget from './components/dateTime'
 import PrimaryNavigation from './components/primary-navigation'
 import WindowTitleBar from './components/window-title-bar'
@@ -11,7 +11,7 @@ const Content = () => {
 
   const layout = {
     home: <div>home</div>,
-    people: <PeopleApplication />,
+    people: <PeopleMainApplication />,
     birthday: <div>Birthday</div>,
     ministry: <div>ministries</div>,
     equipment: <div>equipment</div>,
