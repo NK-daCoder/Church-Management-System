@@ -20,7 +20,7 @@ const api = {
     getAllDivisions: () => electron.ipcRenderer.invoke('division:get-all'),
     createMinistry: (payload) => electron.ipcRenderer.invoke('ministry:create', payload),
     findMinistry: (payload) => electron.ipcRenderer.invoke('ministry:find-one', payload),
-    getAllMinistries: () => electron.ipcRenderer.invoke('ministry:get-all'),
+    getAllMinistries: () => electron.ipcRenderer.invoke('ministry:find-all'),
     updateMinistry: (payload) => electron.ipcRenderer.invoke('ministry:update', payload),
     deleteMinistry: (payload) => electron.ipcRenderer.invoke('ministry:delete', payload)
   },

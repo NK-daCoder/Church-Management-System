@@ -1553,22 +1553,20 @@ const MembershipForm = ({ setView }) => {
   const handleSubmit = async () => {
     if (!validateStep()) return
 
-    try {
-      const finalProfile = {
-        ...formData,
-        updatedAt: ''
-      }
-
-      const result = await createPerson(finalProfile, 'member')
-
-      if (!result.success) {
-        throw new Error(result)
-      }
-
-      return result
-    } catch (error) {
-      console.error(error)
+    const finalProfile = {
+      ...formData,
+      updatedAt: ''
     }
+
+    console.log(finalProfile)
+
+    const result = await createPerson(finalProfile, 'member')
+
+    if (!result) {
+      alert('Person not created')
+    }
+
+    console.log(result)
 
     /*
      * Connect your persistence layer here:
@@ -1580,7 +1578,7 @@ const MembershipForm = ({ setView }) => {
      * await PeopleAPI.create(finalProfile)
      */
 
-    alert('Membership profile ready to be saved.')
+    alert('Member saved')
   }
 
   return (

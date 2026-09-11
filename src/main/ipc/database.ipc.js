@@ -4,6 +4,8 @@ import { DatabaseInitialization } from '../database/init.js'
 import { mainWindow } from '../window/primary.window.js'
 import { PeopleIpc } from './people/people.ipc.js'
 import { EquipmentIpc } from './equipment/equipment.ipc.js'
+import { MinistryIpc } from './ministry/ministry.ipc.js'
+import { DivisionIpc } from './ministry/division.ipc.js'
 
 export class DatabaseIpc {
   static #databaseManager = DatabaseManager.getInstance()
@@ -31,9 +33,14 @@ export class DatabaseIpc {
     this.registerCreateDatabaseIpc()
     const peopleIpc = PeopleIpc.RegisterIpcs()
     const equipmentIpc = EquipmentIpc.registerIpc()
+    const ministryIpc = MinistryIpc.RegisterIpcs()
+    const divisionIpc = DivisionIpc.RegisterIpcs()
     return {
       success: true,
-      message: ['DatabaseIpcs registered', peopleIpc.message, equipmentIpc.message]
+      message: [
+        'DatabaseIpcs registered',
+        [peopleIpc.message, equipmentIpc.message, ministryIpc.message, divisionIpc.message]
+      ]
     }
   }
 }

@@ -26,7 +26,9 @@ import {
 } from '../schemas/ministry/minister.schema.js'
 import {
   ministryCustomeGrowthStatus,
-  ministryCustomeStatusRules
+  ministryCustomeStatusRules,
+  ministryGrowthStatus,
+  ministryGrowthStatusDefinition
 } from '../schemas/ministry/status.schema.js'
 import { customeKpiDefinition } from '../schemas/kpi/kpi.schema.js'
 import {
@@ -35,6 +37,7 @@ import {
   bookingResources
 } from '../schemas/bookings/booking.profile.schema.js'
 import { peopleStatusHistorySchema } from '../schemas/people/status.schema.js'
+import { ministryActivityGoals, ministryActivityTracking } from '../schemas/ministry/activities.schema.js';
 
 export class DatabaseInitialization {
   static #databaseManager = DatabaseManager.getInstance()
@@ -63,6 +66,10 @@ export class DatabaseInitialization {
       ministryMinisterStatus,
       ministryCustomeGrowthStatus,
       ministryCustomeStatusRules,
+      ministryGrowthStatusDefinition,
+      ministryActivityTracking,
+      ministryActivityGoals,
+      ministryGrowthStatus,
       bookingProfile,
       bookingApprovals,
       bookingResources

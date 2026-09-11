@@ -1,9 +1,11 @@
+import MinistryLanding from './applications/ministry/ministry-landing'
 import PeopleMainApplication from './applications/people/people.app'
 import DateTimeWidget from './components/dateTime'
 import PrimaryNavigation from './components/primary-navigation'
 import WindowTitleBar from './components/window-title-bar'
 import DisplayContextProvider from './hooks/context/layout/display.context'
 import { useDisplayChanger } from './hooks/context/layout/useDisplayChanger'
+import { MinistryContextProvider } from './hooks/context/ministries/ministry-context'
 import PeopleContextProvider from './hooks/context/people/people.provider'
 
 const Content = () => {
@@ -13,7 +15,11 @@ const Content = () => {
     home: <div>home</div>,
     people: <PeopleMainApplication />,
     birthday: <div>Birthday</div>,
-    ministry: <div>ministries</div>,
+    ministry: (
+      <MinistryContextProvider>
+        <MinistryLanding />
+      </MinistryContextProvider>
+    ),
     equipment: <div>equipment</div>,
     programe: <div>programes</div>,
     report: <div>report</div>,

@@ -33,3 +33,28 @@ export const ministryCustomeStatusRules = {
     update_at: { type: 'TEXT' }
   }
 }
+
+// status: DORMENT PHASE/INACTIVE | SEED FACE/FORMATION | EMERGING PHASE | ESTABLISHED | THRIVING PHASE | REPRODUCING PHASE
+
+export const ministryGrowthStatus = {
+  table: 'ministry_status_history',
+  schema: {
+    id: { type: 'text', notNull: true, default: crypto.randomUUID() },
+    ministry_id: { type: 'text', notNull: true, references: { table: 'ministry', column: 'id', onDelete: 'CASCADE' } },
+    prev_growth: { type: 'text' },
+    current_status: { type: 'text' },
+    created_at: { type: 'text', default: 'current_timestamp' },
+    update_at: { type: 'text' }
+  }
+}
+
+export const ministryGrowthStatusDefinition = {
+  table: 'ministry_history_status_definition',
+  schema: {
+    id: { type: 'text', notNull: true, default: crypto.randomUUID() },
+    ministry_id: { type: 'text', notNull: true, references: { table: 'ministry', column: 'id', onDelete: 'CASCADE' } },
+    definition: { type: 'text' }
+  }
+}
+
+

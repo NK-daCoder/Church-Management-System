@@ -27,7 +27,7 @@ export class PeopleIpc {
           const person = DatabaseOrm.Insert({
             table: 'people',
             data: {
-              id: payload.id || crypto.randomUUID(),
+              id: crypto.randomUUID(),
               full_name: payload.fullName,
               dob: payload.dateOfBirth,
               anniversary_date: payload.anniversaryDate,
@@ -48,7 +48,7 @@ export class PeopleIpc {
             DatabaseOrm.Insert({
               table: 'people_address',
               data: {
-                id: payload.address.id || crypto.randomUUID(),
+                id: crypto.randomUUID(),
                 people_id: personId,
                 country: payload.address.country,
                 city: payload.address.city,
@@ -71,7 +71,7 @@ export class PeopleIpc {
               DatabaseOrm.Insert({
                 table: 'people_family',
                 data: {
-                  id: familyMember.id || crypto.randomUUID(),
+                  id: crypto.randomUUID(),
                   people_id: personId,
                   full_name: familyMember.familyMemberFullName,
                   relation: familyMember.relation,

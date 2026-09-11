@@ -44,17 +44,11 @@ export class MinistryIpc {
 
       return {
         id: role.id,
-
         title: role.title || '',
-
         purpose: role.purpose || '',
-
         roleFor: role.role_for || '',
-
         prerequisites: qualifications.map((item) => item.qualification),
-
         goals: goals.map((item) => item.goal),
-
         notes: role.notes || ''
       }
     })
@@ -76,10 +70,6 @@ export class MinistryIpc {
       updatedAt: ministryRow.update_at || ''
     }
   }
-
-  // ============================================================
-  // CREATE MINISTRY
-  // ============================================================
 
   static CreateMinistry = () => {
     electron.ipcMain.handle('ministry:create', (_event, payload) => {
@@ -203,6 +193,32 @@ export class MinistryIpc {
             }
           }
 
+          DatabaseOrm.Insert({
+            table: 'ministry_status_history',
+            data: {
+              ministry_id: ministryId,
+              prev_growth: 'No record',
+              current_status: 'Seeded'
+            }
+          })
+
+          const initialStatusDefinitions = [
+            'Ministry has been approved and has a stated purpose.',
+            'Leadership role(s) identified but maybe not yet filled.',
+            'Roles defined but mostly empty.',
+            'No consistent activity yet.'
+          ]
+
+          initialStatusDefinitions.forEach((element) => {
+            DatabaseOrm.Insert({
+              table: 'ministry_history_status_definition',
+              data: {
+                ministry_id: ministryId,
+                definition: element
+              }
+            })
+          })
+
           // ==================================================
           // RETURN COMPLETE MINISTRY
           // ==================================================
@@ -233,10 +249,6 @@ export class MinistryIpc {
       }
     })
   }
-
-  // ============================================================
-  // FIND ONE MINISTRY
-  // ============================================================
 
   static FindOneMinistry = () => {
     electron.ipcMain.handle('ministry:find-one', (_event, payload) => {
@@ -283,19 +295,13 @@ export class MinistryIpc {
     })
   }
 
-  // ============================================================
-  // FIND ALL MINISTRIES
-  // ============================================================
 
   static FindAllMinistries = () => {
     electron.ipcMain.handle('ministry:find-all', () => {
       try {
         const ministries = DatabaseOrm.Select({
-          sql: `
-              SELECT *
-              FROM ministry
-              ORDER BY create_at DESC
-            `
+          sql: 'select * from ministry',
+          params: []
         })
 
         const result = ministries.map((ministry) => this.#buildMinistry(ministry))
@@ -315,9 +321,6 @@ export class MinistryIpc {
     })
   }
 
-  // ============================================================
-  // UPDATE MINISTRY
-  // ============================================================
 
   static UpdateMinistry = () => {
     electron.ipcMain.handle('ministry:update', (_event, payload) => {
@@ -510,10 +513,6 @@ export class MinistryIpc {
       }
     })
   }
-
-  // ============================================================
-  // DELETE MINISTRY
-  // ============================================================
 
   static DeleteMinistry = () => {
     electron.ipcMain.handle('ministry:delete', (_event, payload) => {
