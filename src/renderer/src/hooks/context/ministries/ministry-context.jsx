@@ -152,7 +152,6 @@ export function MinistryContextProvider({ children }) {
     [loadMinistries]
   )
 
-
   const findMinistry = useCallback(async (id) => {
     try {
       setError(null)
@@ -177,7 +176,6 @@ export function MinistryContextProvider({ children }) {
       }
     }
   }, [])
-
 
   useEffect(() => {
     const initialMinistryData = async () => await loadMinistryData()

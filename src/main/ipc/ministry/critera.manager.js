@@ -1,8 +1,3 @@
 export class MinistryCriteriaIpc {
-
-    
-
-    static registerIpc = () => {
-
-    }
+  static registerIpc = () => {}
 }

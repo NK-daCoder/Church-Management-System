@@ -40,7 +40,11 @@ export const ministryGrowthStatus = {
   table: 'ministry_status_history',
   schema: {
     id: { type: 'text', notNull: true, default: crypto.randomUUID() },
-    ministry_id: { type: 'text', notNull: true, references: { table: 'ministry', column: 'id', onDelete: 'CASCADE' } },
+    ministry_id: {
+      type: 'text',
+      notNull: true,
+      references: { table: 'ministry', column: 'id', onDelete: 'CASCADE' }
+    },
     prev_growth: { type: 'text' },
     current_status: { type: 'text' },
     created_at: { type: 'text', default: 'current_timestamp' },
@@ -52,9 +56,11 @@ export const ministryGrowthStatusDefinition = {
   table: 'ministry_history_status_definition',
   schema: {
     id: { type: 'text', notNull: true, default: crypto.randomUUID() },
-    ministry_id: { type: 'text', notNull: true, references: { table: 'ministry', column: 'id', onDelete: 'CASCADE' } },
+    ministry_id: {
+      type: 'text',
+      notNull: true,
+      references: { table: 'ministry', column: 'id', onDelete: 'CASCADE' }
+    },
     definition: { type: 'text' }
   }
 }
-
-

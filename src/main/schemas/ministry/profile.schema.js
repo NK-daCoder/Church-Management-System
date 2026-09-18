@@ -75,3 +75,30 @@ export const ministryRoleGoalsSchema = {
     }
   }
 }
+
+export const subMinistryProfile = {
+  table: 'sub_ministry',
+  schema: {
+    id: { type: 'text', notNull: true, primaryKey: true },
+    ministry_id: { type: 'text', notNull: true, references: { table: 'ministry', column: 'id' } },
+    title: { type: 'text' },
+    purpose: { type: 'text' },
+    created_at: { type: 'text', default: 'CURRENT_TIMESTAMP' },
+    updated_at: { type: 'text' }
+  }
+}
+
+export const subMinistryApproval = {
+  table: 'sub_ministry_approval',
+  schema: {
+    id: { type: 'text', notNull: true, primaryKey: true },
+    sub_ministry: {
+      type: 'text',
+      notNull: true,
+      references: { table: 'sub_ministry', column: 'id' }
+    },
+    who: { type: 'text' },
+    when: { type: 'text' },
+    reason: { type: 'text' }
+  }
+}

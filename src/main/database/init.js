@@ -37,7 +37,10 @@ import {
   bookingResources
 } from '../schemas/bookings/booking.profile.schema.js'
 import { peopleStatusHistorySchema } from '../schemas/people/status.schema.js'
-import { ministryActivityGoals, ministryActivityTracking } from '../schemas/ministry/activities.schema.js';
+import {
+  ministryActivityGoals,
+  ministryActivityTracking
+} from '../schemas/ministry/activities.schema.js'
 
 export class DatabaseInitialization {
   static #databaseManager = DatabaseManager.getInstance()

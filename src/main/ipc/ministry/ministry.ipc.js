@@ -295,7 +295,6 @@ export class MinistryIpc {
     })
   }
 
-
   static FindAllMinistries = () => {
     electron.ipcMain.handle('ministry:find-all', () => {
       try {
@@ -320,7 +319,6 @@ export class MinistryIpc {
       }
     })
   }
-
 
   static UpdateMinistry = () => {
     electron.ipcMain.handle('ministry:update', (_event, payload) => {
