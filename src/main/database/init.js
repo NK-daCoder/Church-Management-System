@@ -17,7 +17,9 @@ import {
   ministryProfileSchema,
   ministryRoleGoalsSchema,
   ministryRoleQualification,
-  ministryRolesSchema
+  ministryRolesSchema,
+  subMinistryApproval,
+  subMinistryProfile
 } from '../schemas/ministry/profile.schema.js'
 import {
   ministerTraining,
@@ -73,6 +75,8 @@ export class DatabaseInitialization {
       ministryActivityTracking,
       ministryActivityGoals,
       ministryGrowthStatus,
+      subMinistryProfile,
+      subMinistryApproval,
       bookingProfile,
       bookingApprovals,
       bookingResources
