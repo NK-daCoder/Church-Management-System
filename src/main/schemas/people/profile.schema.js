@@ -133,3 +133,27 @@ export const peopleSpiritualJourney = {
     update_at: { type: 'text' }
   }
 }
+
+export const peopleFirstImpressions = {
+  table: 'people_first_impressions',
+  schema: {
+    id: { type: 'TEXT', primaryKey: true, notNull: true },
+    people_id: {
+      type: 'TEXT',
+      references: { table: 'people', column: 'id', onDelete: 'CASCADE' }
+    },
+    impressions: { type: 'TEXT' }
+  }
+}
+
+export const peopleExpectations = {
+  table: 'people_expectations',
+  schema: {
+    id: { type: 'TEXT', primaryKey: true, notNull: true },
+    people_id: {
+      type: 'TEXT',
+      references: { table: 'people', column: 'id', onDelete: 'CASCADE' }
+    },
+    expectation: { type: 'TEXT' }
+  }
+}

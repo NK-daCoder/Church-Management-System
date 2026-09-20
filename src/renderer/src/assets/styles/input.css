@@ -4,3 +4,10 @@
     @apply h-11 w-full rounded-xl border border-black/[0.08] bg-white px-3.5 text-sm text-[#1d1d1f] outline-none transition placeholder:text-[#a1a1a6] focus:border-black/20 focus:ring-4 focus:ring-black/[0.04] disabled:cursor-default disabled:bg-[#f5f5f7] disabled:text-[#6e6e73];
   }
 }
+@utility drag {
+  -webkit-app-region: drag;
+}
+
+@utility no-drag {
+  -webkit-app-region: no-drag;
+}

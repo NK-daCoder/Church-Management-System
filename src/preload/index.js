@@ -32,6 +32,12 @@ const api = {
   }
 }
 
+const windowControlsApi = {
+  minimizeWindow: () => electron.ipcRenderer.send('minimize-window'),
+  maximizeWindow: () => electron.ipcRenderer.send('maximize-window'),
+  closeWindow: () => electron.ipcRenderer.send('close-window')
+}
+
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
@@ -39,10 +45,12 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('controls', windowControlsApi)
   } catch (error) {
     console.error(error)
   }
 } else {
   window.electron = electronAPI
   window.api = api
+  window.controls = windowControlsApi
 }

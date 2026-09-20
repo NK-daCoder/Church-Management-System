@@ -4,9 +4,11 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
+  FaceGrinning,
   Mail,
   MapPin,
   Phone,
+  Star,
   User,
   Users
 } from 'lucide-react'
@@ -34,10 +36,28 @@ const steps = [
     icon: Users
   },
   {
+    id: 'impressions',
+    title: 'Impressions',
+    description: 'Tell us your first impressions',
+    icon: FaceGrinning
+  },
+  {
+    id: 'expectations',
+    title: 'Expectations',
+    description: 'visitor expectation',
+    icon: Star
+  },
+  {
     id: 'address',
     title: 'Address',
     description: 'Optional location information.',
     icon: MapPin
+  },
+  {
+    id: 'preview',
+    title: 'Preview Visitor',
+    description: 'Validation',
+    icon: User
   }
 ]
 
@@ -46,10 +66,12 @@ const inputClass =
 
 const labelClass = 'mb-2 block text-[12px] font-medium tracking-wide text-neutral-600'
 
-const VisitorForm = ({ setView, onSubmit }) => {
+const VisitorForm = ({ setView }) => {
   const { peopleTemplate: visitor, setPeopleTemplate: setVisitor } = usePeopleContext()
   const [currentStep, setCurrentStep] = useState(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  // just for rendering and styling button
+  const [isFirstTimeVisitor, setIsFirstTimeVisitor] = useState(null)
 
   const step = steps[currentStep]
 
@@ -86,6 +108,8 @@ const VisitorForm = ({ setView, onSubmit }) => {
     if (!canContinue) return
 
     if (currentStep < steps.length - 1) {
+      console.log(`${currentStep} < ${steps.length - 1}`)
+      console.log(steps.length)
       setCurrentStep((step) => step + 1)
     }
   }
@@ -96,6 +120,24 @@ const VisitorForm = ({ setView, onSubmit }) => {
     }
   }
 
+  const handleCheckbox = (key, value, isChecked) => {
+    setVisitor((prevData) => {
+      // 1. Get the current array for this key, or initialize an empty one
+      const currentArray = prevData[key] || []
+
+      // 2. Add or remove the value based on the checkbox state
+      const updatedArray = isChecked
+        ? [...currentArray, value] // Add item
+        : currentArray.filter((item) => item !== value) // Remove item
+
+      // 3. Return updated state
+      return {
+        ...prevData,
+        [key]: updatedArray
+      }
+    })
+  }
+
   const submitVisitor = async (event) => {
     event.preventDefault()
 
@@ -103,14 +145,16 @@ const VisitorForm = ({ setView, onSubmit }) => {
 
     try {
       console.log(visitor)
-
-      if (onSubmit) {
-        await onSubmit(visitor)
-      }
-
       setVisitor(peopleProfileTemplate)
+      setCurrentStep(0)
 
-      setView('people')
+      // if (onSubmit) {
+      //   await onSubmit(visitor)
+      // }
+
+      // setVisitor(peopleProfileTemplate)
+
+      // setView('people')
     } catch (error) {
       console.error('Failed to create visitor:', error)
     } finally {
@@ -190,7 +234,7 @@ const VisitorForm = ({ setView, onSubmit }) => {
           </div>
 
           {/* Form */}
-          <form onSubmit={submitVisitor}>
+          <form>
             <div className="min-h-[500px] px-6 py-8 md:px-12 md:py-10">
               {/* --------------------------------
                   STEP 1 — PERSONAL
@@ -405,11 +449,19 @@ const VisitorForm = ({ setView, onSubmit }) => {
                           <button
                             key={value}
                             type="button"
-                            className="rounded-2xl border border-neutral-200 bg-white px-4 py-4 text-left transition-all hover:border-neutral-400 hover:bg-neutral-50"
+                            className={`${isFirstTimeVisitor === value ? 'bg-stone-900 text-white hover:opacity-90' : 'bg-white hover:border-neutral-400 hover:bg-neutral-50'} rounded-2xl border border-neutral-200 px-4 py-4 text-left transition-all`}
+                            onClick={() => {
+                              setIsFirstTimeVisitor(value)
+                              console.log(isFirstTimeVisitor)
+                              setVisitor((prev) => ({
+                                ...prev,
+                                isFirstTimer: value
+                              }))
+                            }}
                           >
-                            <p className="text-sm font-semibold text-neutral-900">{value}</p>
+                            <p className="text-sm font-semibold">{value}</p>
 
-                            <p className="mt-1 text-[11px] text-neutral-400">
+                            <p className="mt-1 text-[11px]">
                               {value === 'Yes'
                                 ? 'Welcome to the family.'
                                 : 'Great to have you back.'}
@@ -434,14 +486,139 @@ const VisitorForm = ({ setView, onSubmit }) => {
                     </div>
 
                     <div>
-                      <label className={labelClass}>Anything you'd like us to know?</label>
+                      <label className={labelClass}>Anything {"you'd"} like us to know?</label>
 
                       <textarea
                         rows={4}
                         placeholder="Optional"
                         className={`${inputClass} resize-none`}
+                        onChange={(e) =>
+                          setVisitor((prev) => ({
+                            ...prev,
+                            notes: e.target.value
+                          }))
+                        }
                       />
                     </div>
+                  </div>
+                </div>
+              )}
+              {/* --------------------------------
+                  STEP 4 - IMPRESSIONS
+                  ---------------------------------
+                */}
+              {currentStep === 3 && (
+                <div className="mx-auto max-w-2xl">
+                  <div className="mb-8">
+                    <span className="mb-3 inline-flex rounded-full bg-neutral-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
+                      Step 04
+                    </span>
+
+                    <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
+                      Impressions
+                    </h2>
+
+                    <p className="mt-2 max-w-lg text-sm leading-6 text-neutral-500">
+                      These details help your church team understand what is the first time
+                      impression of the visitor
+                    </p>
+                  </div>
+
+                  <div className="space-y-5">
+                    <div>
+                      <div className="text-stone-600 grid grid-cols-2 gap-4 text-sm">
+                        {[
+                          {
+                            id: 'friendly-welcome',
+                            label: 'Friendly welcome',
+                            name: 'friendlyWelcome',
+                            value: 'friendly welcome'
+                          },
+                          {
+                            id: 'biblical-preaching',
+                            label: 'Biblical preaching',
+                            name: 'biblicalPreaching',
+                            value: 'biblical preaching'
+                          },
+                          {
+                            id: 'godly-atmosphere',
+                            label: 'Godly atmosphere',
+                            name: 'godlyAtmosphere',
+                            value: 'Godly atmosphere'
+                          },
+                          {
+                            id: 'engaging-worship',
+                            label: 'Engaging worship',
+                            name: 'engagingWorship',
+                            value: 'engaging worship'
+                          }
+                        ].map((impressions) => (
+                          <div key={impressions.id} className="flex items-center gap-2">
+                            <label htmlFor={impressions.id} className="order-2">
+                              {impressions.label}
+                            </label>
+                            <input
+                              onChange={(e) =>
+                                handleCheckbox('impressions', impressions.value, e.target.checked)
+                              }
+                              className="order-1 size-4"
+                              type="checkbox"
+                              name={impressions.name}
+                              id={impressions.id}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* --------------------------------
+                  STEP 5 - EXPECTATION
+                  ---------------------------------
+                */}
+              {currentStep === 4 && (
+                <div className="mx-auto max-w-2xl">
+                  <div className="mb-8">
+                    <span className="mb-3 inline-flex rounded-full bg-neutral-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
+                      Step 05
+                    </span>
+
+                    <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
+                      Visitor Expectations
+                    </h2>
+                  </div>
+
+                  <div className="gap-3 grid grid-cols-2 text-stone-600 text-sm">
+                    {[
+                      { id: 'call-me', label: 'Call me for help', value: 'Call for help' },
+                      { id: 'pay-a-visit', label: 'Pay a visit', value: 'Pay a visit' },
+                      {
+                        id: 'include-in-small-group',
+                        label: 'Include in a small group',
+                        value: 'Interested in small group'
+                      },
+                      {
+                        id: 'become member',
+                        label: 'Want to become a member',
+                        value: 'Desires Membership'
+                      }
+                    ].map((expectation) => (
+                      <div key={expectation.id} className="flex items-center gap-2">
+                        <label htmlFor={expectation.id} className="order-2">
+                          {expectation.label}
+                        </label>
+                        <input
+                          className="order-1 size-4"
+                          type="checkbox"
+                          id={expectation.id}
+                          onChange={(e) =>
+                            handleCheckbox('expectation', expectation.value, e.target.checked)
+                          }
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -449,11 +626,11 @@ const VisitorForm = ({ setView, onSubmit }) => {
               {/* --------------------------------
                   STEP 4 — ADDRESS
               -------------------------------- */}
-              {currentStep === 3 && (
+              {currentStep === 5 && (
                 <div className="mx-auto max-w-2xl">
                   <div className="mb-8">
                     <span className="mb-3 inline-flex rounded-full bg-neutral-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-                      Step 04
+                      Step 06
                     </span>
 
                     <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
@@ -547,6 +724,306 @@ const VisitorForm = ({ setView, onSubmit }) => {
                   </div>
                 </div>
               )}
+
+              {currentStep === 6 && (
+                <div className="mx-auto max-w-2xl">
+                  <div className="mb-8">
+                    <span className="mb-3 inline-flex rounded-full bg-neutral-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
+                      Step 7
+                    </span>
+
+                    <h2 className="text-2xl font-semibold tracking-tight text-neutral-950">
+                      Review your details.
+                    </h2>
+
+                    <p className="mt-2 max-w-lg text-sm leading-6 text-neutral-500">
+                      Everything looks good? Review the information below before creating the
+                      visitor profile.
+                    </p>
+                  </div>
+
+                  <div className="space-y-6">
+                    {/* Personal information */}
+                    <div className="rounded-2xl border border-neutral-200 bg-white p-5">
+                      <div className="mb-4 flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                            Personal
+                          </p>
+                          <h3 className="mt-1 text-sm font-semibold text-neutral-950">About you</h3>
+                        </div>
+
+                        <User size={17} className="text-neutral-400" />
+                      </div>
+
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        {visitor.fullName?.trim() && (
+                          <div>
+                            <p className="text-[11px] text-neutral-400">Full name</p>
+                            <p className="mt-1 text-sm font-medium text-neutral-900">
+                              {visitor.fullName}
+                            </p>
+                          </div>
+                        )}
+
+                        {visitor.dateOfBirth?.trim() && (
+                          <div>
+                            <p className="text-[11px] text-neutral-400">Date of birth</p>
+                            <p className="mt-1 text-sm font-medium text-neutral-900">
+                              {visitor.dateOfBirth}
+                            </p>
+                          </div>
+                        )}
+
+                        {visitor.gender?.trim() && (
+                          <div>
+                            <p className="text-[11px] text-neutral-400">Gender</p>
+                            <p className="mt-1 text-sm font-medium text-neutral-900">
+                              {visitor.gender}
+                            </p>
+                          </div>
+                        )}
+
+                        {visitor.maritalStatus?.trim() && (
+                          <div>
+                            <p className="text-[11px] text-neutral-400">Marital status</p>
+                            <p className="mt-1 text-sm font-medium text-neutral-900">
+                              {visitor.maritalStatus}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Contact */}
+                    {(visitor.contactInformation?.preferedContactMethod ||
+                      visitor.contactInformation?.contactPhoneOrLink) && (
+                      <div className="rounded-2xl border border-neutral-200 bg-white p-5">
+                        <div className="mb-4 flex items-center justify-between">
+                          <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                              Contact
+                            </p>
+                            <h3 className="mt-1 text-sm font-semibold text-neutral-950">
+                              Stay connected
+                            </h3>
+                          </div>
+
+                          <Phone size={17} className="text-neutral-400" />
+                        </div>
+
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          {visitor.contactInformation.preferedContactMethod?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">Preferred method</p>
+
+                              <p className="mt-1 text-sm font-medium capitalize text-neutral-900">
+                                {visitor.contactInformation.preferedContactMethod}
+                              </p>
+                            </div>
+                          )}
+
+                          {visitor.contactInformation.contactPhoneOrLink?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">Contact details</p>
+
+                              <p className="mt-1 text-sm font-medium text-neutral-900">
+                                {visitor.contactInformation.contactPhoneOrLink}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Visit */}
+                    {(visitor.isFirstTimer || visitor.notes?.trim()) && (
+                      <div className="rounded-2xl border border-neutral-200 bg-white p-5">
+                        <div className="mb-4 flex items-center justify-between">
+                          <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                              Visit
+                            </p>
+                            <h3 className="mt-1 text-sm font-semibold text-neutral-950">
+                              Your visit
+                            </h3>
+                          </div>
+
+                          <Users size={17} className="text-neutral-400" />
+                        </div>
+
+                        <div className="space-y-4">
+                          {visitor.isFirstTimer?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">First visit</p>
+
+                              <p className="mt-1 text-sm font-medium text-neutral-900">
+                                {visitor.isFirstTimer}
+                              </p>
+                            </div>
+                          )}
+
+                          {visitor.notes?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">Notes</p>
+
+                              <p className="mt-1 text-sm leading-6 text-neutral-700">
+                                {visitor.notes}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Impressions */}
+                    {visitor.impressions?.length > 0 && (
+                      <div className="rounded-2xl border border-neutral-200 bg-white p-5">
+                        <div className="mb-4 flex items-center justify-between">
+                          <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                              Impressions
+                            </p>
+
+                            <h3 className="mt-1 text-sm font-semibold text-neutral-950">
+                              First impressions
+                            </h3>
+                          </div>
+
+                          <FaceGrinning size={17} className="text-neutral-400" />
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {visitor.impressions.map((impression) => (
+                            <span
+                              key={impression}
+                              className="rounded-full bg-neutral-100 px-3 py-1.5 text-[11px] font-medium text-neutral-700"
+                            >
+                              {impression}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Expectations */}
+                    {visitor.expectation?.length > 0 && (
+                      <div className="rounded-2xl border border-neutral-200 bg-white p-5">
+                        <div className="mb-4 flex items-center justify-between">
+                          <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                              Expectations
+                            </p>
+
+                            <h3 className="mt-1 text-sm font-semibold text-neutral-950">
+                              How we can support you
+                            </h3>
+                          </div>
+
+                          <Star size={17} className="text-neutral-400" />
+                        </div>
+
+                        <div className="space-y-2">
+                          {visitor.expectation.map((item) => (
+                            <div
+                              key={item}
+                              className="flex items-center gap-3 rounded-xl bg-neutral-50 px-3 py-2.5"
+                            >
+                              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white">
+                                <Check size={11} strokeWidth={3} />
+                              </div>
+
+                              <span className="text-[12px] font-medium text-neutral-700">
+                                {item}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Address */}
+                    {(visitor.address?.city ||
+                      visitor.address?.province ||
+                      visitor.address?.area ||
+                      visitor.address?.code ||
+                      visitor.address?.streetName ||
+                      visitor.address?.houseNumber) && (
+                      <div className="rounded-2xl border border-neutral-200 bg-white p-5">
+                        <div className="mb-4 flex items-center justify-between">
+                          <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                              Address
+                            </p>
+
+                            <h3 className="mt-1 text-sm font-semibold text-neutral-950">
+                              Where you're based
+                            </h3>
+                          </div>
+
+                          <MapPin size={17} className="text-neutral-400" />
+                        </div>
+
+                        <div className="grid gap-4 sm:grid-cols-2">
+                          {visitor.address.city?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">City</p>
+                              <p className="mt-1 text-sm font-medium text-neutral-900">
+                                {visitor.address.city}
+                              </p>
+                            </div>
+                          )}
+
+                          {visitor.address.province?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">Province</p>
+                              <p className="mt-1 text-sm font-medium capitalize text-neutral-900">
+                                {visitor.address.province}
+                              </p>
+                            </div>
+                          )}
+
+                          {visitor.address.area?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">Area / suburb</p>
+                              <p className="mt-1 text-sm font-medium text-neutral-900">
+                                {visitor.address.area}
+                              </p>
+                            </div>
+                          )}
+
+                          {visitor.address.code?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">Postal code</p>
+                              <p className="mt-1 text-sm font-medium text-neutral-900">
+                                {visitor.address.code}
+                              </p>
+                            </div>
+                          )}
+
+                          {visitor.address.streetName?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">Street</p>
+                              <p className="mt-1 text-sm font-medium text-neutral-900">
+                                {visitor.address.streetName}
+                              </p>
+                            </div>
+                          )}
+
+                          {visitor.address.houseNumber?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">House number</p>
+                              <p className="mt-1 text-sm font-medium text-neutral-900">
+                                {visitor.address.houseNumber}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Footer */}
@@ -578,7 +1055,8 @@ const VisitorForm = ({ setView, onSubmit }) => {
                   </button>
                 ) : (
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={submitVisitor}
                     disabled={isSubmitting}
                     className="flex items-center gap-2 rounded-xl bg-neutral-950 px-5 py-2.5 text-[12px] font-medium text-white transition-all hover:bg-neutral-800 disabled:opacity-50"
                   >

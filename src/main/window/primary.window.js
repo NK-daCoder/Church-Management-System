@@ -12,7 +12,7 @@ export const createWindow = () => {
     height: 670,
     show: false,
     autoHideMenuBar: true,
-    frame: true,
+    frame: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -20,6 +20,22 @@ export const createWindow = () => {
       contextIsolation: true,
       nodeIntegration: false
     }
+  })
+
+  electron.ipcMain.on('minimize-window', () => {
+    mainWindow.minimize()
+  })
+
+  electron.ipcMain.on('maximize-window', () => {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize()
+    } else {
+      mainWindow.maximize()
+    }
+  })
+
+  electron.ipcMain.on('close-window', () => {
+    mainWindow.close()
   })
 
   mainWindow.on('ready-to-show', () => {

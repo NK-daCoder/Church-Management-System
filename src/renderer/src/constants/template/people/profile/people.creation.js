@@ -19,25 +19,11 @@ export const peopleProfileTemplate = {
     houseType: '',
     houseNumber: ''
   },
-  family: [
-    {
-      id: crypto.randomUUID(),
-      familyMemberFullName: '',
-      relation: '', // e.g., spouse, child, parent, sibling, etc..
-      dateOfBirth: '',
-      stageOfDevelopment: '',
-      gender: ''
-    }
-  ],
+  family: [],
   contactInformation: {
     preferedContactMethod: '', // phone | email | sms
     contactPhoneOrLink: '',
-    other: [
-      {
-        platform: '', // e.g., WhatsApp, Telegram, Instagram, etc..
-        contact: ''
-      }
-    ]
+    other: []
   },
   additionalInformation: {
     school: {
@@ -48,23 +34,8 @@ export const peopleProfileTemplate = {
       spiritualStatus: 'seeker',
       reason: 'new comer'
     },
-    occupation: [
-      {
-        occupation: '',
-        specialization: '',
-        employer: '',
-        workPhone: '',
-        workEmergencyPhone: ''
-      }
-    ],
-    hobbies: [
-      {
-        hobbyName: '',
-        hobbyType: '',
-        hobbyEnvironmentPreferences: '',
-        isProfessionalSkill: false
-      }
-    ]
+    occupation: [],
+    hobbies: []
   },
   createdAt: nowTimestamp(),
   updatedAt: ''

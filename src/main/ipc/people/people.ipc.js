@@ -155,11 +155,7 @@ export class PeopleIpc {
               })
             }
           }
-
-          // ==================================================
-          // 8. HOBBIES
-          // ==================================================
-
+          
           if (Array.isArray(payload.additionalInformation?.hobbies)) {
             for (const hobby of payload.additionalInformation.hobbies) {
               DatabaseOrm.Insert({
@@ -171,6 +167,32 @@ export class PeopleIpc {
                   type: hobby.hobbyType,
                   environmental_preferences: hobby.hobbyEnvironmentPreferences,
                   is_professional_skill: hobby.isProfessionalSkill ? 1 : 0
+                }
+              })
+            }
+          }
+
+          if(Array.isArray(payload.expectation) && payload.expectation.length) {
+            for (const exp of payload.expectation) {
+              DatabaseOrm.Insert({
+                table: 'people_expectations',
+                schema: {
+                  id: crypto.randomUUID(),
+                  people_id: personId,
+                  expectation: exp
+                }
+              })
+            }
+          }
+
+          if (Array.isArray(payload.impressions) && payload.impressions) {
+            for (const impression of payload.impressions) {
+              DatabaseOrm.Insert({
+                table: 'people_first_impressions',
+                schema: {
+                  id: crypto.randomUUID(),
+                  people_id: personId,
+                  impressions: impression
                 }
               })
             }

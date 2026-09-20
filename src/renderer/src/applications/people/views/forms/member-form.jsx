@@ -183,6 +183,11 @@ const ReviewRow = ({ label, value }) => (
   </div>
 )
 
+ReviewRow.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.node
+}
+
 const MembershipForm = ({ setView }) => {
   const { peopleTemplate, setPeopleTemplate, createPerson } = usePeopleContext()
   console.log('component render')
