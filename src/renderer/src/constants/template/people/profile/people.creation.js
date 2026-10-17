@@ -35,7 +35,9 @@ export const peopleProfileTemplate = {
       reason: 'new comer'
     },
     occupation: [],
-    hobbies: []
+    hobbies: [],
+    impressions: [],
+    expectation: []
   },
   createdAt: nowTimestamp(),
   updatedAt: ''

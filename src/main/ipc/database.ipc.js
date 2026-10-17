@@ -27,10 +27,33 @@ export class DatabaseIpc {
     })
   }
 
+  static registerRetrieveDatabaseIpc = () => {
+    electron.ipcMain.handle('db:find', () => {
+      const database = this.#databaseManager.currentDatabase
+      if (!database) {
+        return {
+          success: false,
+          code: 'NOT FOUND / CONNECTION NOT ESTABLISHED',
+          message: 'Database not found / was moved to another folder',
+          databasePath: null,
+          databaseName: null
+        }
+      }
+
+      return {
+        success: true,
+        message: 'Database connection is established',
+        code: 'CONNECTION ESTABLISHED',
+        database
+      }
+    })
+  }
+
   static registerIpcs = () => {
     this.registerChooseDatabaseIpc()
     this.registerRemoveDatabaseIpc()
     this.registerCreateDatabaseIpc()
+    this.registerRetrieveDatabaseIpc()
     const peopleIpc = PeopleIpc.RegisterIpcs()
     const equipmentIpc = EquipmentIpc.registerIpc()
     const ministryIpc = MinistryIpc.RegisterIpcs()

@@ -26,6 +26,7 @@ import {
   ChevronLeft
 } from 'lucide-react'
 import { usePeopleContext } from '../../../../hooks/context/people/usePeople'
+import { peopleProfileTemplate } from '../../../../constants/template/people/profile/people.creation'
 
 const STEPS = [
   {
@@ -188,9 +189,8 @@ ReviewRow.propTypes = {
   value: PropTypes.node
 }
 
-const MembershipForm = ({ setView }) => {
-  const { peopleTemplate, setPeopleTemplate, createPerson } = usePeopleContext()
-  console.log('component render')
+const MembershipForm = ({ setView, formMode }) => {
+  const { peopleTemplate, setPeopleTemplate, createPerson, updatePerson } = usePeopleContext()
 
   /*
    * Keep the form draft local.
@@ -1557,33 +1557,26 @@ const MembershipForm = ({ setView }) => {
 
   const handleSubmit = async () => {
     if (!validateStep()) return
-
     const finalProfile = {
       ...formData,
       updatedAt: ''
     }
-
     console.log(finalProfile)
-
     const result = await createPerson(finalProfile, 'member')
-
     if (!result) {
       alert('Person not created')
     }
-
     console.log(result)
-
-    /*
-     * Connect your persistence layer here:
-     *
-     * await window.api.people.create(finalProfile)
-     *
-     * or:
-     *
-     * await PeopleAPI.create(finalProfile)
-     */
-
     alert('Member saved')
+    setView('people')
+    setPeopleTemplate(peopleProfileTemplate)
+  }
+
+  const handleUpdate = async () => {
+    const result = await updatePerson(peopleTemplate)
+    console.log(result)
+    setView('people')
+    setPeopleTemplate(peopleProfileTemplate)
   }
 
   return (
@@ -1611,7 +1604,7 @@ const MembershipForm = ({ setView }) => {
               </div>
 
               <h1 className="mt-1 text-2xl font-semibold tracking-[-0.04em] text-gray-950 sm:text-3xl">
-                Create your profile
+                {formMode === 'edit' ? 'Editing' : 'Register'} your profile
               </h1>
             </div>
 
@@ -1736,7 +1729,7 @@ const MembershipForm = ({ setView }) => {
               ) : (
                 <button
                   type="button"
-                  onClick={handleSubmit}
+                  onClick={formMode === 'edit' ? handleUpdate : handleSubmit}
                   className="flex items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-medium text-white shadow-[0_5px_20px_rgba(0,0,0,0.15)] transition hover:bg-gray-800 active:scale-[0.98]"
                 >
                   <Check size={17} />
@@ -1752,7 +1745,8 @@ const MembershipForm = ({ setView }) => {
 }
 
 MembershipForm.propTypes = {
-  setView: PropTypes.func.isRequired
+  setView: PropTypes.func.isRequired,
+  formMode: PropTypes.oneOf(['create', 'edit']).isRequired
 }
 
 export default MembershipForm

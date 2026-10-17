@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import PropTypes from 'prop-types'
 import {
   ArrowRight,
   Check,
@@ -66,14 +67,18 @@ const inputClass =
 
 const labelClass = 'mb-2 block text-[12px] font-medium tracking-wide text-neutral-600'
 
-const VisitorForm = ({ setView }) => {
-  const { peopleTemplate: visitor, setPeopleTemplate: setVisitor } = usePeopleContext()
+const VisitorForm = ({ setView, formMode }) => {
+  const {
+    createPerson,
+    updatePerson,
+    peopleTemplate: visitor,
+    setPeopleTemplate: setVisitor
+  } = usePeopleContext()
+  console.log(visitor)
   const [currentStep, setCurrentStep] = useState(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
   // just for rendering and styling button
   const [isFirstTimeVisitor, setIsFirstTimeVisitor] = useState(null)
-
-  const step = steps[currentStep]
 
   const updateField = (path, value) => {
     setVisitor((previous) => {
@@ -123,7 +128,7 @@ const VisitorForm = ({ setView }) => {
   const handleCheckbox = (key, value, isChecked) => {
     setVisitor((prevData) => {
       // 1. Get the current array for this key, or initialize an empty one
-      const currentArray = prevData[key] || []
+      const currentArray = prevData.additionalInformation[key] || []
 
       // 2. Add or remove the value based on the checkbox state
       const updatedArray = isChecked
@@ -133,7 +138,10 @@ const VisitorForm = ({ setView }) => {
       // 3. Return updated state
       return {
         ...prevData,
-        [key]: updatedArray
+        additionalInformation: {
+          ...prevData.additionalInformation,
+          [key]: updatedArray
+        }
       }
     })
   }
@@ -145,20 +153,26 @@ const VisitorForm = ({ setView }) => {
 
     try {
       console.log(visitor)
+      const result = await createPerson(visitor, 'visitor')
+      console.log(result)
       setVisitor(peopleProfileTemplate)
       setCurrentStep(0)
-
-      // if (onSubmit) {
-      //   await onSubmit(visitor)
-      // }
-
-      // setVisitor(peopleProfileTemplate)
-
-      // setView('people')
+      setView('people')
     } catch (error) {
       console.error('Failed to create visitor:', error)
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const updateVisitor = async (event) => {
+    event.preventDefault()
+    try {
+      const result = await updatePerson(visitor)
+      console.log(result)
+      setView('people')
+    } catch (error) {
+      console.error('Failed to update visitor:', error)
     }
   }
 
@@ -168,7 +182,10 @@ const VisitorForm = ({ setView }) => {
         {/* Header */}
         <header className="mb-6 flex items-center justify-between">
           <button
-            onClick={() => setView('people')}
+            onClick={() => {
+              setVisitor(peopleProfileTemplate)
+              setView('people')
+            }}
             type="button"
             className="group flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] font-medium text-neutral-600 transition-colors hover:bg-white hover:text-neutral-900"
           >
@@ -181,7 +198,9 @@ const VisitorForm = ({ setView }) => {
               People
             </p>
 
-            <h1 className="text-lg font-semibold tracking-tight text-neutral-950">New Visitor</h1>
+            <h1 className="text-lg font-semibold tracking-tight text-neutral-950">
+              {formMode === 'register' ? 'Register visitor' : 'Update visitor'}
+            </h1>
           </div>
         </header>
 
@@ -471,6 +490,13 @@ const VisitorForm = ({ setView }) => {
                       </div>
                     </div>
 
+                    <div className="flex flex-col">
+                      <label htmlFor="attendance-date" className={labelClass}>
+                        Attendance Date
+                      </label>
+                      <input id="attendance-date" type="date" className={inputClass} />
+                    </div>
+
                     <div>
                       <label className={labelClass}>How did you hear about us?</label>
 
@@ -561,8 +587,11 @@ const VisitorForm = ({ setView }) => {
                               onChange={(e) =>
                                 handleCheckbox('impressions', impressions.value, e.target.checked)
                               }
-                              className="order-1 size-4"
+                              className="order-1 size-3"
                               type="checkbox"
+                              checked={visitor.additionalInformation.impressions.includes(
+                                impressions.value
+                              )}
                               name={impressions.name}
                               id={impressions.id}
                             />
@@ -610,12 +639,15 @@ const VisitorForm = ({ setView }) => {
                           {expectation.label}
                         </label>
                         <input
-                          className="order-1 size-4"
+                          className="order-1 size-3"
                           type="checkbox"
                           id={expectation.id}
                           onChange={(e) =>
                             handleCheckbox('expectation', expectation.value, e.target.checked)
                           }
+                          checked={visitor.additionalInformation.expectation.includes(
+                            expectation.value
+                          )}
                         />
                       </div>
                     ))}
@@ -863,6 +895,16 @@ const VisitorForm = ({ setView }) => {
                             </div>
                           )}
 
+                          {visitor.attendance?.trim() && (
+                            <div>
+                              <p className="text-[11px] text-neutral-400">Attendance Date</p>
+
+                              <p className="mt-1 text-sm font-medium text-neutral-900">
+                                {visitor.attendance}
+                              </p>
+                            </div>
+                          )}
+
                           {visitor.notes?.trim() && (
                             <div>
                               <p className="text-[11px] text-neutral-400">Notes</p>
@@ -957,7 +999,7 @@ const VisitorForm = ({ setView }) => {
                             </p>
 
                             <h3 className="mt-1 text-sm font-semibold text-neutral-950">
-                              Where you're based
+                              Where are they from
                             </h3>
                           </div>
 
@@ -1056,11 +1098,11 @@ const VisitorForm = ({ setView }) => {
                 ) : (
                   <button
                     type="button"
-                    onClick={submitVisitor}
+                    onClick={formMode === 'register' ? submitVisitor : updateVisitor}
                     disabled={isSubmitting}
                     className="flex items-center gap-2 rounded-xl bg-neutral-950 px-5 py-2.5 text-[12px] font-medium text-white transition-all hover:bg-neutral-800 disabled:opacity-50"
                   >
-                    {isSubmitting ? 'Saving...' : 'Create visitor'}
+                    {isSubmitting ? 'Saving...' : formMode === 'register' ? 'Submit' : 'Update'}
                     {!isSubmitting && <ArrowRight size={15} />}
                   </button>
                 )}
@@ -1077,6 +1119,11 @@ const VisitorForm = ({ setView }) => {
       </div>
     </section>
   )
+}
+
+VisitorForm.propTypes = {
+  setView: PropTypes.func.isRequired,
+  formMode: PropTypes.string.isRequired
 }
 
 export default VisitorForm

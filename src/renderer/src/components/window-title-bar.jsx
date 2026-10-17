@@ -9,7 +9,7 @@ const titleBar = [
 
 const WindowTitleBar = () => {
   return (
-    <section className="flex justify-between items-center  h-9 px-2 drag">
+    <section className="flex justify-between items-center h-9 px-2 drag">
       <div className="flex items-center gap-2 text-sm">
         <img src={windowIcon} alt="dominion foundation" className="size-5" />
         <h1 className="text-stone-900 font-medium">Church management system</h1>

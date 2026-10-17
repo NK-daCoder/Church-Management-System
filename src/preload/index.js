@@ -12,6 +12,11 @@ const api = {
     findAll: () => electron.ipcRenderer.invoke('people:get-all')
   },
   peopleAttendance: {},
+
+  church: {
+    serviceDefinition: (payload) => electron.ipcRenderer.invoke('service:definition', payload)
+  },
+
   ministry: {
     createDivisionProfile: (payload) => electron.ipcRenderer.invoke('division:create', payload),
     updateDivisionProfile: (payload) => electron.ipcRenderer.invoke('division:update', payload),
@@ -28,7 +33,8 @@ const api = {
   database: {
     createDatabase: (dbname) => electron.ipcRenderer.invoke('db:create', dbname),
     removeDatabase: () => electron.ipcRenderer.invoke('db:remove-current'),
-    selectDatabase: () => electron.ipcRenderer.invoke('db:choose-database')
+    selectDatabase: () => electron.ipcRenderer.invoke('db:choose-database'),
+    getDatabase: () => electron.ipcRenderer.invoke('db:find')
   }
 }
 

@@ -37,7 +37,7 @@ const PrimaryNavigation = () => {
               <button
                 type="button"
                 title={key}
-                className={`${activeTab === key ? 'bg-amber-500 border-t border-white shadow-lg shadow-amber-600 text-white' : ''} cursor-pointer size-8 rounded-lg flex items-center justify-center`}
+                className={`${activeTab === key ? 'bg-orange-400 border-t border-white shadow-lg shadow-amber-300 text-white' : ''} cursor-pointer size-8 rounded-lg flex items-center justify-center`}
                 onClick={() => {
                   setActiveTab(key)
                   setDisplay(key)

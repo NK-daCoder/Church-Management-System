@@ -10,6 +10,7 @@ const PeopleContextProvider = ({ children }) => {
   const loadPeople = async () => {
     const result = await window.api.people.findAll()
     setPeopleList(result)
+    return true
   }
 
   const createPerson = async (payload, personType) => {

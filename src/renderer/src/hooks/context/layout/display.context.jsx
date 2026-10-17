@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { DisplayChangerContext } from './display.create'
 
 const DisplayContextProvider = ({ children }) => {
@@ -8,6 +9,10 @@ const DisplayContextProvider = ({ children }) => {
       {children}
     </DisplayChangerContext.Provider>
   )
+}
+
+DisplayContextProvider.propTypes = {
+  children: PropTypes.node.isRequired
 }
 
 export default DisplayContextProvider

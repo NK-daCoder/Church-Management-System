@@ -1,3 +1,5 @@
+import { Plus } from 'lucide-react'
+import React from 'react'
 import MinistryLanding from './applications/ministry/ministry-landing'
 import PeopleMainApplication from './applications/people/people.app'
 import DateTimeWidget from './components/dateTime'
@@ -10,6 +12,23 @@ import PeopleContextProvider from './hooks/context/people/people.provider'
 
 const Content = () => {
   const { display } = useDisplayChanger()
+  const [database, setDatabase] = React.useState(null)
+
+  React.useEffect(() => {
+    const renderDatabase = async () => {
+      const result = await window.api.database.getDatabase()
+      if (!result.success) {
+        setDatabase({
+          success: false,
+          connected: false,
+          ...result
+        })
+      }
+      console.log(result)
+      setDatabase(result)
+    }
+    renderDatabase()
+  }, [])
 
   const layout = {
     home: <div>home</div>,
@@ -30,7 +49,7 @@ const Content = () => {
   let renderLayout = layout[display]
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col bg-white border">
+    <div className="h-screen overflow-hidden flex flex-col bg-white border">
       {/* Fixed title bar */}
       <WindowTitleBar />
 
@@ -40,14 +59,23 @@ const Content = () => {
         <PrimaryNavigation />
 
         {/* Scrollable content */}
-        <main className="flex-1 flex justify-between min-w-0 min-h-0 overflow-y-auto border border-stone-200 bg-stone-100 rounded-lg">
+        <main className="flex-1 flex justify-between min-h-0 overflow-y-auto border border-stone-200 bg-stone-100 rounded-lg">
           {/* Your pages go here be sure to render layout */}
           {renderLayout}
         </main>
       </section>
 
-      <footer className="h-8 flex items-center justify-between px-3 text-sm">
-        <p>Database Name: </p>
+      <footer className="h-12 flex items-center justify-between px-3 text-sm">
+        <section className="flex gap-4 items-center">
+          <button
+            onClick={async () => await window.api.database.createDatabase('church-system-2026')}
+            type="button"
+            className="size-6 border border-stone-300 bg-stone-100 rounded-lg flex items-center justify-center"
+          >
+            <Plus size={16} className="size-4" />
+          </button>
+          <p>Database Name: {database ? `${database.database.name}` : 'No database'}</p>
+        </section>
         <DateTimeWidget />
       </footer>
     </div>

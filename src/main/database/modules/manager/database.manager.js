@@ -34,6 +34,21 @@ export class DatabaseManager {
     return this.#database !== null
   }
 
+  // retrieving full database object
+  get currentDatabase() {
+    if (!this.#database || !this.#databasePath) {
+      return null
+    }
+
+    return {
+      name: path.basename(this.#databasePath),
+      path: this.#databasePath,
+      directory: path.dirname(this.#databasePath),
+      extension: path.extname(this.#databasePath),
+      connected: true
+    }
+  }
+
   async create(window, name) {
     const result = await dialog.showSaveDialog(window, {
       title: 'Create Database',
